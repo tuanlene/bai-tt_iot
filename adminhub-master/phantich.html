@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style_A.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <img src="img/anhtruong.png" width="45" height="45">
+            <span class="text">SMART IOT</span>
+        </a>
+        <ul class="side-menu top">
+            <li>
+                <a href="index.html">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="phantich.html">
+                    <i class='bx bxs-bar-chart-alt-2'></i>
+                    <span class="text">Analytics</span>
+                </a>
+            </li>
+            <li>
+                <a href="thanhvien.html">
+                    <i class='bx bxs-group'></i>
+                    <span class="text">Team</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="setting.html">
+                    <i class='bx bxs-cog'></i>
+                    <span class="text">Settings</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <div id="real-time-clock" class="real-time-clock"></div>
+            <form action="#">
+                <div class="form-input">
+                    <button type="submit"></button>
+                </div>
+            </form>
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+            <a href="#" class="notification"></a>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>SMART IOT</h1>
+                    <h3>Analytics</h3>
+                </div>
+                <a href="#" class="btn-download" id="downloadPDF">
+                    <i class='bx bxs-cloud-download'></i>
+                    <span class="text">Download PDF</span>
+                </a>
+            </div>
+
+            <div class="table-data">
+                <div class="order">
+                    <div class="charts-container">
+                        <!-- Biểu đồ Độ ẩm (tròn) -->
+                        <div class="chart-container">
+                            <h2>Độ ẩm trung bình</h2>
+                            <div id="humidityChart"></div>
+                        </div>
+
+                        <!-- Biểu đồ Nhiệt độ (đường) -->
+                        <div class="chart-container">
+                            <h2>Nhiệt độ trung bình</h2>
+                            <canvas id="temperatureChart"></canvas>
+                        </div>
+
+                        <!-- Biểu đồ Lượng mưa (cột) -->
+                        <div class="chart-container">
+                            <h2>Lượng mưa trung bình</h2>
+                            <canvas id="rainChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-analytics.js"></script>
+    <script src="script_A.js"></script>
+
+    <script>
+        // Hàm tạo giá trị ngẫu nhiên
+        function getRandomValues(min, max, length) {
+            return Array.from({ length }, () => Math.floor(Math.random() * (max - min + 1)) + min);
+        }
+
+        // Dữ liệu ngẫu nhiên cho độ ẩm
+        const humidityValues = getRandomValues(5, 40, 4);
+        const humiditySum = humidityValues.reduce((a, b) => a + b, 0);
+        const adjustedHumidityValues = humidityValues.map(val => Math.round((val / humiditySum) * 100));
+
+        // Dữ liệu ngẫu nhiên cho nhiệt độ
+        const temperatureValues = getRandomValues(20, 35, 12);
+
+        // Dữ liệu ngẫu nhiên cho lượng mưa
+        const rainValues = getRandomValues(0, 350, 12);
+
+        // Biểu đồ độ ẩm (tròn)
+        Plotly.newPlot("humidityChart", [{
+            labels: ['Rất cao (>90%)', 'Trung bình (50-70%)', 'Thấp (<50%)', 'Cao (70-90%)'],
+            values: adjustedHumidityValues,
+            type: "pie",
+            marker: { colors: ['#ffcc99', '#66b3ff', '#ff9999', '#99ff99'] },
+            textinfo: 'percent',
+            textposition: 'inside',
+            hoverinfo: 'label+percent',
+            showlegend: true
+        }], {
+            margin: { t: 30, b: 20, l: 20, r: 40 },
+            width: 350,
+            height: 350,
+            legend: {
+                x: 1,
+                y: 1,
+                xanchor: 'left',
+                yanchor: 'middle',
+                font: { size: 12, color: '#000' },
+                bgcolor: 'rgba(255, 255, 255, 0.8)',
+                bordercolor: '#000',
+                borderwidth: 1
+            }
+        });
+
+        // Biểu đồ nhiệt độ (đường)
+        new Chart("temperatureChart", {
+            type: "line",
+            data: {
+                labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+                         "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+                datasets: [{
+                    label: "Nhiệt độ (°C)",
+                    borderColor: "blue",
+                    data: temperatureValues
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 40 }
+                }
+            }
+        });
+
+        // Biểu đồ lượng mưa (cột)
+        new Chart("rainChart", {
+            type: "bar",
+            data: {
+                labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+                         "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+                datasets: [{
+                    label: "Lượng mưa (ml)",
+                    backgroundColor: ["red", "green", "blue", "orange", "brown", "red", "green", "blue", "orange", "brown", "red", "green"],
+                    data: rainValues
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 400 }
+                }
+            }
+        });
+
+        // Tải PDF
+        document.getElementById("downloadPDF").addEventListener("click", function (e) {
+            e.preventDefault();
+            let element = document.querySelector(".charts-container");
+            html2pdf()
+                .set({
+                    margin: 10,
+                    filename: 'Analytics_Report.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                })
+                .from(element)
+                .save();
+        });
+
+        // Đồng hồ thời gian thực
+        function updateRealTimeClock() {
+            const clock = document.getElementById('real-time-clock');
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            clock.textContent = timeString;
+        }
+
+        updateRealTimeClock();
+        setInterval(updateRealTimeClock, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style_TV.css">
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <img src="img/anhtruong.png" width="45" height="45">
+            <span class="text">SMART IOT</span>
+        </a>
+        <ul class="side-menu top">
+            <li>
+                <a href="index.html">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="phantich.html">
+                    <i class='bx bxs-bar-chart-alt-2'></i>
+                    <span class="text">Analytics</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="thanhvien.html">
+                    <i class='bx bxs-group'></i>
+                    <span class="text">Team</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="setting.html">
+                    <i class='bx bxs-cog'></i>
+                    <span class="text">Settings</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <div id="real-time-clock" class="real-time-clock"></div>
+            <form action="#">
+                <div class="form-input">
+                    <button type="submit"></button>
+                </div>
+            </form>
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+            <a href="#" class="notification"></a>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>SMART IOT</h1>
+                    <h3>Team</h3>
+                </div>
+                <!-- Loại bỏ nút Download PDF -->
+            </div>
+
+            <ul class="box-info">
+                <li>
+                    <span class="text">
+                        <h3>Phạm Ngọc Diễm Trang</h3>
+                        <p>MSSV: 22222222</p>
+                    </span>
+                    <div class="member-image">
+                        <img src="user.png" id="trang.img">
+                        <div class="toggle-buttons">
+                            <button type="button" id="trang-on"><i class='bx bx-user-check'></i></button>
+                            <button type="button" id="trang-off"><i class='bx bx-user-x'></i></button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <span class="text">
+                        <h3>Lê Anh Tuấn</h3>
+                        <p>MSSV: 22222222</p>
+                    </span>
+                    <div class="member-image">
+                        <img src="user.png" id="tuan.img">
+                        <div class="toggle-buttons">
+                            <button type="button" id="tuan-on"><i class='bx bx-user-check'></i></button>
+                            <button type="button" id="tuan-off"><i class='bx bx-user-x'></i></button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <span class="text">
+                        <h3>Trương Minh Khôi</h3>
+                        <p>MSSV: 22222222</p>
+                    </span>
+                    <div class="member-image">
+                        <img src="user.png" id="khoi.img">
+                        <div class="toggle-buttons">
+                            <button type="button" id="khoi-on"><i class='bx bx-user-check'></i></button>
+                            <button type="button" id="khoi-off"><i class='bx bx-user-x'></i></button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-analytics.js"></script>
+    <!-- Loại bỏ thư viện html2pdf.js vì không còn cần thiết -->
+    <script src="script_TV.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyClayDd1n7OcCkqZ6iOwdtD_m7OLRCnPDM",
+            authDomain: "stupid-city.firebaseapp.com",
+            databaseURL: "https://stupid-city-default-rtdb.firebaseio.com",
+            projectId: "stupid-city",
+            storageBucket: "stupid-city.firebasestorage.app",
+            messagingSenderId: "238299841414",
+            appId: "1:238299841414:web:9c4e1dcc3f1e9ab0952207",
+            measurementId: "G-C2T6EV0XTV"
+        };
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        // Đồng hồ thời gian thực
+        function updateRealTimeClock() {
+            const clock = document.getElementById('real-time-clock');
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            clock.textContent = timeString;
+        }
+        updateRealTimeClock();
+        setInterval(updateRealTimeClock, 1000);
+
+        // Xử lý dark mode
+        const switchMode = document.getElementById('switch-mode');
+        switchMode.addEventListener('change', () => {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark') ? 'enabled' : 'disabled');
+        });
+
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark');
+            switchMode.checked = true;
+        }
+    </script>
+</body>
+</html>

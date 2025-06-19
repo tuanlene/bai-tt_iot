@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>Settings</title>
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <img src="img/anhtruong.png" width="45" height="45">
+            <span class="text">SMART IOT</span>
+        </a>
+        <ul class="side-menu top">
+            <li>
+                <a href="index.html">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="phantich.html">
+                    <i class='bx bxs-bar-chart-alt-2'></i>
+                    <span class="text">Analytics</span>
+                </a>
+            </li>
+            <li>
+                <a href="thanhvien.html">
+                    <i class='bx bxs-group'></i>
+                    <span class="text">Team</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <li class="active">
+                <a href="setting.html">
+                    <i class='bx bxs-cog'></i>
+                    <span class="text">Settings</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <div id="real-time-clock" class="real-time-clock"></div>
+            <form action="#">
+                <div class="form-input">
+                    <button type="submit"></button>
+                </div>
+            </form>
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+            <a href="#" class="notification"></a>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>SMART IOT</h1>
+                    <h3>Settings</h3>
+                </div>
+            </div>
+
+            <ul class="box-info">
+                <li>
+                    <i class='bx bx bxs-hot'></i>
+                    <span class="text">
+                        <h3>Khí gas</h3>
+                        <p><span id="Khigas">--</span> 
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-thermometer'></i>
+                    <span class="text">
+                        <h3>Nhiệt độ</h3>
+                        <p><span id="nhietdo">--</span>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-droplet'></i>
+                    <span class="text">
+                        <h3>Độ ẩm</h3>
+                        <p><span id="doam">--</span>
+                    </span>
+                </li>
+            </ul>
+
+            <div class="table-data">
+                <!-- Phần cài đặt nhiệt độ -->
+                <div class="order">
+                    <div class="head">
+                        <h3>Cài đặt giá trị nhiệt độ</h3>
+                    </div>
+                    <div class="settings-section">
+                        <div class="setting-item">
+                            <span>🌡️ Nhiệt độ cao nhất:</span>
+                            <span id="maxTemp">--°C</span>
+                            <input type="number" id="maxTempInput" style="display: none;" value="60">
+                        </div>
+                        <div class="setting-item">
+                            <span>⚠️ Nhiệt độ cảnh báo:</span>
+                            <span id="warnTemp">--°C</span>
+                            <input type="number" id="warnTempInput" style="display: none;" value="50">
+                        </div>
+                        <div class="setting-item">
+                            <span>🌡️ Nhiệt độ hiện tại:</span>
+                            <span id="currentTemp">--°C</span>
+                        </div>
+                    </div>
+                    <div class="settings-buttons">
+                        <button id="editTempButton" onclick="toggleEdit('temp')">CHỈNH SỬA</button>
+                        <button id="saveTempButton" onclick="saveSettings('temp')" style="display: none;">LƯU</button>
+                        <button id="enableTempAlarmButton" onclick="enableAlarm('temp')">
+                            <img src="alarm.gif" width="20" height="20" alt="Bật báo động" class="alarm-icon"> Bật báo động
+                        </button>
+                        <button id="disableTempAlarmButton" onclick="disableAlarm('temp')">
+                            <img src="alarm-off.png" width="20" height="20" alt="Tắt báo động" class="alarm-icon"> Tắt báo động
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Phần cài đặt nồng độ khí gas -->
+                <div class="todo">
+                    <div class="head">
+                        <h3>Cài đặt giá trị nồng độ khí gas</h3>
+                    </div>
+                    <div class="settings-section">
+                        <div class="setting-item">
+                            <span>💨 Nồng độ khí gas cao nhất:</span>
+                            <span id="maxGas">--ppm</span>
+                            <input type="number" id="maxGasInput" style="display: none;" value="100">
+                        </div>
+                        <div class="setting-item">
+                            <span>⚠️ Nồng độ khí gas cảnh báo:</span>
+                            <span id="warnGas">--ppm</span>
+                            <input type="number" id="warnGasInput" style="display: none;" value="70">
+                        </div>
+                        <div class="setting-item">
+                            <span>💨 Nồng độ khí gas hiện tại:</span>
+                            <span id="currentGas">--ppm</span>
+                        </div>
+                    </div>
+                    <div class="settings-buttons">
+                        <button id="editGasButton"  onclick="toggleEdit('gas')">CHỈNH SỬA</button>
+                        <button id="saveGasButton" onclick="saveSettings('gas')" style="display: none;">LƯU</button>
+                        <button id="enableGasAlarmButton" onclick="enableAlarm('gas')">
+                            <img src="alarm.gif" width="20" height="20" alt="Bật báo động" class="alarm-icon"> Bật báo động
+                        </button>
+                        <button id="disableGasAlarmButton" onclick="disableAlarm('gas')">
+                            <img src="alarm-off.png" width="20" height="20" alt="Tắt báo động" class="alarm-icon"> Tắt báo động
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+    <script src="script.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-analytics.js"></script>
+    <div class="bot">
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyClayDd1n7OcCkqZ6iOwdtD_m7OLRCnPDM",
+            authDomain: "stupid-city.firebaseapp.com",
+            databaseURL: "https://stupid-city-default-rtdb.firebaseio.com",
+            projectId: "stupid-city",
+            storageBucket: "stupid-city.firebasestorage.app",
+            messagingSenderId: "238299841414",
+            appId: "1:238299841414:web:9c4e1dcc3f1e9ab0952207",
+            measurementId: "G-C2T6EV0XTV"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        let warnTemp;
+        let warnGas;
+        let isEditingTemp = false;
+        let isEditingGas = false;
+        let warningTempAlarmEnabled = true;
+        let warningGasAlarmEnabled = true;
+        const warningSound = new Audio("mp3/coibaodong.mp3");
+        let latestTemp = null;
+        let dataList = JSON.parse(localStorage.getItem("dataList")) || [];
+
+        function getCurrentTime() {
+            let time = new Date();
+            let gio = String(time.getHours()).padStart(2, '0');
+            let phut = String(time.getMinutes()).padStart(2, '0');
+            let giay = String(time.getSeconds()).padStart(2, '0');
+            return `${gio}:${phut}:${giay}`;
+        }
+        function getFirebaseData() {
+            const tempRef = database.ref("/sensor/temperature");
+            const humiRef = database.ref("/sensor/humidity");
+            const gasRef = database.ref("/sensor/gas");  
+        
+            tempRef.on("value", (snapshot) => {
+                const nhietdo = snapshot.val();
+                if (nhietdo !== null) {
+                    document.getElementById("nhietdo").innerText = nhietdo + " °C";
+                    document.getElementById("currentTemp").innerText = nhietdo + " °C";
+                } else {
+                    document.getElementById("nhietdo").innerText = "No Data";
+                    document.getElementById("currentTemp").innerText = "-- °C";
+                }
+                if (warningTempAlarmEnabled && nhietdo > warnTemp) {
+                    warningSound.play();
+                    alert("CẢNH BÁO: Nhiệt độ vượt ngưỡng!");
+                }
+            });
+        
+            // Lấy độ ẩm từ Firebase
+            humiRef.on("value", (snapshot) => {
+                let doam = snapshot.val();
+                if (doam !== null) {
+                    document.getElementById("doam").innerText = doam + " %";
+                } else {
+                    document.getElementById("doam").innerText = "No Data";
+                }
+            });
+        
+            gasRef.on("value", (snapshot) => {
+                const gas = snapshot.val();
+                if (gas !== null) {
+                    document.getElementById("Khigas").innerText = gas + " ppm";
+                    document.getElementById("currentGas").innerText = gas + " ppm";
+                } else {
+                    document.getElementById("Khigas").innerText = "No Data";
+                    document.getElementById("currentGas").innerText = "-- ppm";
+                }
+                if (warningGasAlarmEnabled && gas > warnGas) {
+                    warningSound.play();
+                    alert("CẢNH BÁO: Nồng độ khí gas vượt ngưỡng!");
+                }
+            });
+        }
+        function saveDataWithSensors() {
+            Promise.all([
+                database.ref("/sensor/humidity").once("value"),
+                database.ref("/sensor/temperature").once("value"),
+                database.ref("/sensor/gas").once("value"),
+            ]).then(([humiSnapshot, tempSnapshot, gasSnapshot]) => {
+                let doam = humiSnapshot.val();
+                let nhietdo = tempSnapshot.val();
+                let khigas = gasSnapshot.val();
+                addRow(nhietdo, doam, khigas);
+            });
+        }
+        getFirebaseData();
+        // Load Settings
+        function loadSettings() {
+            const maxTemp = localStorage.getItem("maxTemp") || 60;
+            warnTemp = parseFloat(localStorage.getItem("warnTemp") || 50);
+            const maxGas = localStorage.getItem("maxGas") || 100;
+            warnGas = parseFloat(localStorage.getItem("warnGas") || 70);
+        
+            document.getElementById("maxTemp").innerText = `${maxTemp}°C`;
+            document.getElementById("maxTempInput").value = maxTemp;
+            document.getElementById("warnTemp").innerText = `${warnTemp}°C`;
+            document.getElementById("warnTempInput").value = warnTemp;
+        
+            document.getElementById("maxGas").innerText = `${maxGas}ppm`;
+            document.getElementById("maxGasInput").value = maxGas;
+            document.getElementById("warnGas").innerText = `${warnGas}ppm`;
+            document.getElementById("warnGasInput").value = warnGas;
+        }
+        warnTemp = parseFloat(warnTemp);
+        warnGas = parseFloat(warnGas);
+
+        
+        // Toggle Edit Mode
+        function toggleEdit(type) {
+            if (type === 'temp') {
+                isEditingTemp = !isEditingTemp;
+                const editButton = document.getElementById("editTempButton");
+                const saveButton = document.getElementById("saveTempButton");
+
+                if (isEditingTemp) {
+                    document.getElementById("maxTemp").style.display = "none";
+                    document.getElementById("maxTempInput").style.display = "inline-block";
+                    document.getElementById("warnTemp").style.display = "none";
+                    document.getElementById("warnTempInput").style.display = "inline-block";
+
+                    editButton.style.display = "none";
+                    saveButton.style.display = "inline-block";
+                } else {
+                    document.getElementById("maxTemp").style.display = "inline-block";
+                    document.getElementById("maxTempInput").style.display = "none";
+                    document.getElementById("warnTemp").style.display = "inline-block";
+                    document.getElementById("warnTempInput").style.display = "none";
+
+                    editButton.style.display = "inline-block";
+                    saveButton.style.display = "none";
+                }
+            } else if (type === 'gas') {
+                isEditingGas = !isEditingGas;
+                const editButton = document.getElementById("editGasButton");
+                const saveButton = document.getElementById("saveGasButton");
+
+                if (isEditingGas) {
+                    document.getElementById("maxGas").style.display = "none";
+                    document.getElementById("maxGasInput").style.display = "inline-block";
+                    document.getElementById("warnGas").style.display = "none";
+                    document.getElementById("warnGasInput").style.display = "inline-block";
+
+                    editButton.style.display = "none";
+                    saveButton.style.display = "inline-block";
+                } else {
+                    document.getElementById("maxGas").style.display = "inline-block";
+                    document.getElementById("maxGasInput").style.display = "none";
+                    document.getElementById("warnGas").style.display = "inline-block";
+                    document.getElementById("warnGasInput").style.display = "none";
+
+                    editButton.style.display = "inline-block";
+                    saveButton.style.display = "none";
+                }
+            }
+        }
+
+        // Save Settings
+        function saveSettings(type) {
+            if (type === 'temp') {
+                const maxTemp = document.getElementById("maxTempInput").value;
+                const warnTemp = document.getElementById("warnTempInput").value;
+
+                if (maxTemp < warnTemp) {
+                    alert("Nhiệt độ cao nhất phải lớn hơn nhiệt độ cảnh báo!");
+                    return;
+                }
+
+                localStorage.setItem("maxTemp", maxTemp);
+                localStorage.setItem("warnTemp", warnTemp);
+
+                document.getElementById("maxTemp").innerText = `${maxTemp}°C`;
+                document.getElementById("warnTemp").innerText = `${warnTemp}°C`;
+
+                toggleEdit('temp');
+                alert("Đã lưu cài đặt nhiệt độ!");
+            } else if (type === 'gas') {
+                const maxGas = document.getElementById("maxGasInput").value;
+                const warnGas = document.getElementById("warnGasInput").value;
+
+                if (maxGas < warnGas) {
+                    alert("Nồng độ khí gas cao nhất phải lớn hơn nồng độ cảnh báo!");
+                    return;
+                }
+
+                localStorage.setItem("maxGas", maxGas);
+                localStorage.setItem("warnGas", warnGas);
+
+                document.getElementById("maxGas").innerText = `${maxGas}ppm`;
+                document.getElementById("warnGas").innerText = `${warnGas}ppm`;
+
+                toggleEdit('gas');
+                alert("Đã lưu cài đặt nồng độ khí gas!");
+            }
+        }
+
+        // Update Temperature and Gas Concentration
+        function getFirebaseData() {
+            const tempRef = database.ref("/sensor/temperature");
+            const humiRef = database.ref("/sensor/humidity");
+            const gasRef = database.ref("/sensor/gas");
+
+            tempRef.on("value", (snapshot) => {
+                const  nhietdo = snapshot.val();
+                document.getElementById("nhietdo").innerText = nhietdo + " °C";
+                document.getElementById("currentTemp").innerText = `${ nhietdo}°C`;
+
+                const warnTemp = parseFloat(localStorage.getItem("warnTemp") );
+                if ( nhietdo > warnTemp && warningTempAlarmEnabled) {
+                    document.getElementById("currentTemp").style.color = "red";
+                    document.getElementById("currentTemp").style.fontWeight = "bold";
+                    playWarningSound();
+                } else {
+                    document.getElementById("currentTemp").style.color = "inherit";
+                    document.getElementById("currentTemp").style.fontWeight = "normal";
+                }
+            });
+
+            gasRef.on("value", (snapshot) => {
+                const gas = snapshot.val();
+                document.getElementById("Khigas").innerText = gas + "  ppm";
+                document.getElementById("currentGas").innerText = `${gas}ppm`;
+
+                const warnGas = parseFloat(localStorage.getItem("warnGas") );
+                if (gas > warnGas && warningGasAlarmEnabled) {
+                    document.getElementById("currentGas").style.color = "red";
+                    document.getElementById("currentGas").style.fontWeight = "bold";
+                    playWarningSound();
+                } else {
+                    document.getElementById("currentGas").style.color = "inherit";
+                    document.getElementById("currentGas").style.fontWeight = "normal";
+                }
+            });
+
+            humiRef.on("value", (snapshot) => {
+                const doam = snapshot.val();
+                 document.getElementById("doam").innerText = doam + " %";
+            });
+        }
+
+        function playWarningSound() {
+            if (warningSound.paused || warningSound.ended) {
+                warningSound.currentTime = 0;
+                warningSound.play();
+            }
+        }
+
+        function enableAlarm(type) {
+            if (type === 'temp') {
+                warningTempAlarmEnabled = true;
+                localStorage.setItem("warningTempAlarmState", "on");
+                alert("Đã bật báo động nhiệt độ!");
+            } else if (type === 'gas') {
+                warningGasAlarmEnabled = true;
+                localStorage.setItem("warningGasAlarmState", "on");
+                alert("Đã bật báo động nồng độ khí gas!");
+            }
+        }
+
+        function disableAlarm(type) {
+            if (type === 'temp') {
+                warningTempAlarmEnabled = false;
+                localStorage.setItem("warningTempAlarmState", "off");
+                warningSound.pause();
+                warningSound.currentTime = 0;
+                document.getElementById("currentTemp").style.color = "inherit";
+                document.getElementById("currentTemp").style.fontWeight = "normal";
+                alert("Đã tắt báo động nhiệt độ!");
+            } else if (type === 'gas') {
+                warningGasAlarmEnabled = false;
+                localStorage.setItem("warningGasAlarmState", "off");
+                warningSound.pause();
+                warningSound.currentTime = 0;
+                document.getElementById("currentGas").style.color = "inherit";
+                document.getElementById("currentGas").style.fontWeight = "normal";
+                alert("Đã tắt báo động nồng độ khí gas!");
+            }
+        }
+
+        // Initialize
+        setInterval(updateRealTimeClock, 1000);
+        setInterval(updateTempAndGas, 500);
+        loadSettings();
+
+        window.onload = function () {
+            const savedTempAlarmState = localStorage.getItem("warningTempAlarmState");
+            if (savedTempAlarmState === "off") {
+                warningTempAlarmEnabled = false;
+            }
+            const savedGasAlarmState = localStorage.getItem("warningGasAlarmState");
+            if (savedGasAlarmState === "off") {
+                warningGasAlarmEnabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
